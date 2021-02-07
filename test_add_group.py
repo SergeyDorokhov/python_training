@@ -52,20 +52,6 @@ class AddGroup(unittest.TestCase):
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
 
-    def is_element_present(self, how, what):
-        try:
-            self.wd.find_element(by=how, value=what)
-        except NoSuchElementException as e:
-            return False
-        return True
-
-    def is_alert_present(self):
-        try:
-            self.wd.switch_to_alert()
-        except NoAlertPresentException as e:
-            return False
-        return True
-
     def tearDown(self):
         self.wd.quit()
 
