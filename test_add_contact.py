@@ -10,18 +10,20 @@ class TestAddContact(unittest.TestCase):
         self.wd.implicitly_wait(30)
 
     def test_add_contact(self):
-        wd = self.wd
-        self.login(wd)
-        self.create_contact(wd, Contact(firstname="AAA", lastname="BBB", home_phone="123456789"))
-        self.logout(wd)
+        self.login()
+        self.create_contact(Contact(firstname="AAA", lastname="BBB", home_phone="123456789"))
+        self.logout()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("home").click()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element_by_link_text("Logout").click()
 
-    def create_contact(self, wd, contact):
+    def create_contact(self, contact):
+        wd = self.wd
         wd.find_element_by_link_text("add new").click()
         # fill contact form
         wd.find_element_by_name("firstname").click()
@@ -35,10 +37,11 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("home").send_keys(contact.home_phone)
         # submit contact creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-        self.open_home_page(wd)
+        self.open_home_page()
 
-    def login(self, wd):
-        self.open_auth_page(wd)
+    def login(self):
+        wd = self.wd
+        self.open_auth_page()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -46,7 +49,8 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def open_auth_page(self, wd):
+    def open_auth_page(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/")
 
     def tearDown(self):
