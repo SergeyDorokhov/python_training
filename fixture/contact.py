@@ -17,4 +17,4 @@ class ContactHelper:
         wd.find_element_by_name("home").send_keys(contact.home_phone)
         # submit contact creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-        self.app.open_home_page()
+        self.app.navigation.open_home_page()
