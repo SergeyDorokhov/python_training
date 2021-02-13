@@ -1,9 +1,9 @@
 from selenium import webdriver
 
-from python_training.fixture.contact import ContactHelper
-from python_training.fixture.group import GroupHelper
-from python_training.fixture.navigation import NavigationHelper
-from python_training.fixture.session import SessionHelper
+from fixture.contact import ContactHelper
+from fixture.group import GroupHelper
+from fixture.navigation import NavigationHelper
+from fixture.session import SessionHelper
 
 
 class Application:
