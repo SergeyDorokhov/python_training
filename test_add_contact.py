@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 from contact import Contact
-
 from selenium import webdriver
 
 
@@ -12,10 +11,8 @@ class TestAddContact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_auth_page(wd)
         self.login(wd)
         self.create_contact(wd, Contact(firstname="AAA", lastname="BBB", home_phone="123456789"))
-        self.open_home_page(wd)
         self.logout(wd)
 
     def open_home_page(self, wd):
@@ -38,8 +35,10 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("home").send_keys(contact.home_phone)
         # submit contact creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.open_home_page(wd)
 
     def login(self, wd):
+        self.open_auth_page(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
