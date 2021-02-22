@@ -5,7 +5,7 @@ class ContactHelper:
     def create(self, contact):
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
-        self.fill_contact_form(contact, wd)
+        self.fill_contact_form(contact)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.app.navigation.open_home_page()
 
@@ -20,17 +20,18 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@title='Edit']").click()
-        self.fill_contact_form(contact, wd)
+        self.fill_contact_form(contact)
         wd.find_element_by_name("update").click()
         self.app.navigation.open_home_page()
 
-    def fill_contact_form(self, contact, wd):
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.lastname)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(contact.home_phone)
+    def fill_contact_form(self, contact):
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("lastname", contact.lastname)
+        self.change_field_value("home", contact.home_phone)
+
+    def change_field_value(self, field, value):
+        wd = self.app.wd
+        if value is not None:
+            wd.find_element_by_name(field).click()
+            wd.find_element_by_name(field).clear()
+            wd.find_element_by_name(field).send_keys(value)
