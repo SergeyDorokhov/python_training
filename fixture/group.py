@@ -1,3 +1,6 @@
+from model.group import Group
+
+
 class GroupHelper:
     def __init__(self, app):
         self.app = app
@@ -41,3 +44,12 @@ class GroupHelper:
     def select_first_group(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
+
+    def count(self):
+        wd = self.app.wd
+        self.app.navigation.open_groups_page()
+        return len(wd.find_elements_by_name("selected[]"))
+
+    def create_if_not_exist(self):
+        if self.app.group.count() == 0:
+            self.app.group.create(Group("First group"))
