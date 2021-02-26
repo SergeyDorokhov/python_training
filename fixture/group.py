@@ -53,3 +53,13 @@ class GroupHelper:
     def create_if_not_exist(self):
         if self.app.group.count() == 0:
             self.app.group.create(Group("First group"))
+
+    def get_group_list(self):
+        wd = self.app.wd
+        self.app.navigation.open_groups_page()
+        groups = []
+        for group in wd.find_elements_by_css_selector("span.group"):
+            name = group.text
+            id = group.find_element_by_name("selected[]").get_attribute("value")
+            groups.append(Group(name=name, id=id))
+        return groups
