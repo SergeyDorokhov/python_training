@@ -11,6 +11,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.app.navigation.open_home_page()
+        self.contact_cache = None
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -18,6 +19,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         self.app.navigation.open_home_page()
+        self.contact_cache = None
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
@@ -26,6 +28,7 @@ class ContactHelper:
         self.fill_contact_form(contact)
         wd.find_element_by_name("update").click()
         self.app.navigation.open_home_page()
+        self.contact_cache = None
 
     def fill_contact_form(self, contact):
         self.change_field_value("firstname", contact.firstname)
@@ -48,15 +51,18 @@ class ContactHelper:
         if self.app.contact.count() == 0:
             self.app.contact.create(Contact(firstname="First contact"))
 
+    contact_cache = None
+
     def get_list(self):
-        wd = self.app.wd
-        contacts = []
-        for entry in wd.find_elements_by_name("entry"):
-            id_entry = entry.find_element_by_name("selected[]").get_attribute("value")
-            last_name = entry.find_element_by_xpath("//td[2]").text
-            first_name = entry.find_element_by_xpath("//td[3]").text
-            contacts.append(Contact(firstname=first_name, lastname=last_name, id_contact=id_entry))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.contact_cache = []
+            for entry in wd.find_elements_by_name("entry"):
+                id_entry = entry.find_element_by_name("selected[]").get_attribute("value")
+                last_name = entry.find_element_by_xpath("//td[2]").text
+                first_name = entry.find_element_by_xpath("//td[3]").text
+                self.contact_cache.append(Contact(firstname=first_name, lastname=last_name, id_contact=id_entry))
+        return self.contact_cache
 
     def get_next_id(self, contacts):
         # max_id = sorted(contacts, key=lambda contact: int(contact.id_contact))[-1].id_contact
