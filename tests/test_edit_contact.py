@@ -9,5 +9,6 @@ def test_edit_first_contact(app):
     contact.id_contact = list_before[0].id_contact
     app.contact.edit_first_contact(contact)
     assert len(list_before) == app.contact.count()
+    list_before[0] = contact
     list_after = app.contact.get_list()
     assert sorted(list_before) == sorted(list_after)
