@@ -47,3 +47,18 @@ class ContactHelper:
     def create_if_not_exist(self):
         if self.app.contact.count() == 0:
             self.app.contact.create(Contact(firstname="First contact"))
+
+    def get_list(self):
+        wd = self.app.wd
+        contacts = []
+        for entry in wd.find_elements_by_name("entry"):
+            id_entry = entry.find_element_by_name("selected[]").get_attribute("value")
+            last_name = entry.find_element_by_xpath("//td[2]").text
+            first_name = entry.find_element_by_xpath("//td[3]").text
+            contacts.append(Contact(firstname=first_name, lastname=last_name, id_contact=id_entry))
+        return contacts
+
+    def get_next_id(self, contacts):
+        # max_id = sorted(contacts, key=lambda contact: int(contact.id_contact))[-1].id_contact
+        max_id = sorted(contacts, key=Contact.get_id)[-1].id_contact
+        return str(int(max_id) + 1)
