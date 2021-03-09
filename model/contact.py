@@ -1,9 +1,13 @@
 class Contact:
-    def __init__(self, firstname=None, lastname=None, home_phone=None, id_contact=None):
+    def __init__(self, firstname=None, lastname=None, id_contact=None, mobile_phone=None, home_phone=None,
+                 work_phone=None, all_phones_from_home_page=None):
         self.firstname = firstname
         self.lastname = lastname
+        self.mobile_phone = mobile_phone
         self.home_phone = home_phone
+        self.work_phone = work_phone
         self.id_contact = id_contact
+        self.all_phones_from_home_page = all_phones_from_home_page
 
     def __eq__(self, other):
         return self.id_contact == other.id_contact and self.firstname == other.firstname \
