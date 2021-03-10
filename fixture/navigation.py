@@ -1,12 +1,13 @@
 class NavigationHelper:
-    def __init__(self, app):
+    def __init__(self, app, base_url):
         self.app = app
+        self.base_url = base_url
 
     def open_auth_page(self):
         wd = self.app.wd
         if not (wd.current_url.endswith("addressbook/") and len(
                 wd.find_elements_by_xpath("//input[@value='Login']")) > 0):
-            wd.get("http://localhost/addressbook/")
+            wd.get(self.base_url)
 
     def open_home_page(self):
         wd = self.app.wd
