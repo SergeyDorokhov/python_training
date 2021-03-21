@@ -25,6 +25,14 @@ class GroupHelper:
         self.app.navigation.open_home_page()
         self.group_cache = None
 
+    def delete_group_by_id(self, id):
+        wd = self.app.wd
+        self.app.navigation.open_groups_page()
+        self.select_group_by_id(id)
+        wd.find_element_by_name("delete").click()
+        self.app.navigation.open_home_page()
+        self.group_cache = None
+
     def edit_first_group(self, group):
         self.edit_some_group(group, 0)
 
@@ -32,6 +40,16 @@ class GroupHelper:
         wd = self.app.wd
         self.app.navigation.open_groups_page()
         self.select_group_by_index(index)
+        wd.find_element_by_name("edit").click()
+        self.fill_group_form(group)
+        wd.find_element_by_name("update").click()
+        self.app.navigation.open_home_page()
+        self.group_cache = None
+
+    def edit_some_group_by_id(self, group, id):
+        wd = self.app.wd
+        self.app.navigation.open_groups_page()
+        self.select_group_by_id(id)
         wd.find_element_by_name("edit").click()
         self.fill_group_form(group)
         wd.find_element_by_name("update").click()
@@ -56,6 +74,10 @@ class GroupHelper:
     def select_group_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_group_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value = '%s']" % id).click()
 
     def count(self):
         wd = self.app.wd
