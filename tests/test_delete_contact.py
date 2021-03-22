@@ -1,23 +1,15 @@
 # -*- coding: utf-8 -*-
-from random import randrange
+import random
 
 
-def test_delete_first_contact(app):
+def test_delete_some_contact(app, db, check_ui):
     app.contact.create_if_not_exist()
-    list_before = app.contact.get_list()
-    app.contact.delete_first_contact()
-    assert len(list_before) - 1 == app.contact.count()
-    list_after = app.contact.get_list()
-    list_before[0:1] = []
+    list_before = db.get_contact_list()
+    contact = random.choice(list_before)
+    app.contact.delete_contact_by_id(contact.id_contact)
+    assert len(list_before) - 1 == len(db.get_contact_list())
+    list_after = db.get_contact_list()
+    list_before.remove(contact)
     assert list_before == list_after
-
-
-def test_delete_some_contact(app):
-    app.contact.create_if_not_exist()
-    list_before = app.contact.get_list()
-    index = randrange(len(list_before))
-    app.contact.delete_contact_by_index(index)
-    assert len(list_before) - 1 == app.contact.count()
-    list_after = app.contact.get_list()
-    list_before[index: index + 1] = []
-    assert list_before == list_after
+    if check_ui:
+        assert sorted(list_after) == sorted(app.contact.get_list())

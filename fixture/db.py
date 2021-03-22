@@ -1,5 +1,6 @@
 import pymysql.cursors
 
+from model.contact import Contact
 from model.group import Group
 
 
@@ -22,6 +23,18 @@ class DbFixture:
         finally:
             cursor.close()
         return list_groups
+
+    def get_contact_list(self):
+        list_contacts = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, firstname, lastname from addressbook")
+            for row in cursor:
+                (id, firstname, lastname) = row
+                list_contacts.append(Contact(id_contact=str(id), firstname=firstname, lastname=lastname))
+        finally:
+            cursor.close()
+        return list_contacts
 
     def destroy(self):
         self.connection.close()
