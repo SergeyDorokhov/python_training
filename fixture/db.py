@@ -36,5 +36,19 @@ class DbFixture:
             cursor.close()
         return list_contacts
 
+    def get_contact_list_with_all_attribute(self):
+        list_contacts = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, firstname, lastname, home, mobile, work, email, email2, email3 from addressbook")
+            for row in cursor:
+                (id, firstname, lastname, home, mobile, work, email, email2, email3) = row
+                list_contacts.append(Contact(id_contact=str(id), firstname=firstname, lastname=lastname,
+                                             home_phone=home, mobile_phone=mobile, work_phone=work,
+                                             email=email, email2=email2, email3=email3))
+        finally:
+            cursor.close()
+        return list_contacts
+
     def destroy(self):
         self.connection.close()

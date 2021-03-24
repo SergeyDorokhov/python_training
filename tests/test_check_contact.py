@@ -1,6 +1,19 @@
 import re
 
 
+def test_check_contacts_on_ui_with_db(app, db):
+    contacts_from_ui = app.contact.get_list()
+    contacts_from_db = db.get_contact_list_with_all_attribute()
+    assert len(contacts_from_db) == len(contacts_from_ui)
+    contacts_db_sort = sorted(contacts_from_db)
+    contacts_ui_sort = sorted(contacts_from_ui)
+    assert contacts_db_sort == contacts_ui_sort
+
+    for i in range(len(contacts_from_db)):
+        assert merge_emails_like_on_home_page(contacts_db_sort[i]) == contacts_ui_sort[i].all_emails_on_home_page
+        assert merge_phones_like_on_home_page(contacts_db_sort[i]) == contacts_ui_sort[i].all_phones_from_home_page
+
+
 def test_check_contact_on_home_page(app):
     contact_from_home_page = app.contact.get_list()[0]
     contact_from_edit_page = app.contact.get_contact_from_edit_page(0)
