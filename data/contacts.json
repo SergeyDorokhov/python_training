@@ -13,50 +13,5 @@
     "email3": null,
     "all_phones_from_home_page": null,
     "all_emails_on_home_page": null
-  },
-  {
-    "py/object": "model.contact.Contact",
-    "firstname": "firstname: we lK0hlE",
-    "lastname": "lastname: B",
-    "address": null,
-    "mobile_phone": "12216",
-    "home_phone": "14",
-    "work_phone": "181679",
-    "id_contact": null,
-    "email": null,
-    "email2": null,
-    "email3": null,
-    "all_phones_from_home_page": null,
-    "all_emails_on_home_page": null
-  },
-  {
-    "py/object": "model.contact.Contact",
-    "firstname": "firstname: 8pm4AL",
-    "lastname": "lastname:",
-    "address": null,
-    "mobile_phone": "18",
-    "home_phone": "1793",
-    "work_phone": "16",
-    "id_contact": null,
-    "email": null,
-    "email2": null,
-    "email3": null,
-    "all_phones_from_home_page": null,
-    "all_emails_on_home_page": null
-  },
-  {
-    "py/object": "model.contact.Contact",
-    "firstname": "firstname: r",
-    "lastname": "lastname: YXPL",
-    "address": null,
-    "mobile_phone": "164987",
-    "home_phone": "1916",
-    "work_phone": "142",
-    "id_contact": null,
-    "email": null,
-    "email2": null,
-    "email3": null,
-    "all_phones_from_home_page": null,
-    "all_emails_on_home_page": null
   }
 ]

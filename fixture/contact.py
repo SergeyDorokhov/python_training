@@ -1,5 +1,7 @@
 import re
 
+from selenium.webdriver.support.ui import Select
+
 from model.contact import Contact
 
 
@@ -11,6 +13,14 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
         self.fill_contact_form(contact)
+        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.app.navigation.open_home_page()
+        self.contact_cache = None
+
+    def create_in_first_group(self, contact):
+        wd = self.app.wd
+        wd.find_element_by_link_text("add new").click()
+        self.fill_contact_form_with_group(contact)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.app.navigation.open_home_page()
         self.contact_cache = None
@@ -61,6 +71,12 @@ class ContactHelper:
         self.change_field_value("home", contact.home_phone)
         self.change_field_value("work", contact.work_phone)
         self.change_field_value("mobile", contact.mobile_phone)
+
+    def fill_contact_form_with_group(self, contact):
+        wd = self.app.wd
+        self.fill_contact_form(contact)
+        select = Select(wd.find_element_by_name('new_group'))
+        select.select_by_index(1)
 
     def change_field_value(self, field, value):
         wd = self.app.wd
