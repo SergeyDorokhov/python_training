@@ -16,7 +16,7 @@ class DbFixture:
         list_groups = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("select group_id, group_name, group_header, group_footer from group_list")
+            cursor.execute("select group_id, group_name, group_header, group_footer from group_list order by group_id asc")
             for row in cursor:
                 (id, name, header, footer) = row
                 list_groups.append(Group(id=str(id), name=name, header=header, comment=footer))
@@ -67,6 +67,23 @@ class DbFixture:
             cursor.close()
         return list_contacts
 
+    def get_contacts_free_of_group(self):
+        list_contacts = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("""
+            select a.id, a.firstname, a.lastname from addressbook a 
+            left join address_in_groups aig 
+            on a.id = aig.id 
+            where aig .group_id is NULL
+            """)
+            for row in cursor:
+                (id, firstname, lastname) = row
+                list_contacts.append(Contact(id_contact=str(id), firstname=firstname, lastname=lastname))
+        finally:
+            cursor.close()
+        return list_contacts
+
     def destroy(self):
         self.connection.close()
 
@@ -81,3 +98,23 @@ class DbFixture:
         finally:
             cursor.close()
         return list(list_groups)
+
+    def get_groups_from_contact(self, contact):
+        list_groups = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("""
+            select aig.group_id, g.group_name from addressbook a 
+            join address_in_groups aig 
+            on a.id = aig.id 
+            join group_list g 
+            on aig.group_id = g.group_id  
+            where a.id = %s
+            """ % contact.id_contact)
+            rows = cursor.fetchall()
+            for row in rows:
+                list_groups.append(Group(id=str(row[0]), name=row[1]))
+        finally:
+            cursor.close()
+        return list(list_groups)
+

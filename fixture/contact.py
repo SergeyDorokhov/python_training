@@ -162,3 +162,12 @@ class ContactHelper:
         mobilephone = re.search("M: (.*)", text).group(1)
         workphone = re.search("W: (.*)", text).group(1)
         return Contact(home_phone=homephone, mobile_phone=mobilephone, work_phone=workphone)
+
+    def add_contact_to_group_by_id(self, group, contact):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        wd.find_element_by_css_selector("input[value = '%s']" % contact.id_contact).click()
+        select = Select(wd.find_element_by_name('to_group'))
+        select.select_by_visible_text(group.name)
+        wd.find_element_by_xpath("//input[@value='Add to']").click()
+        self.contact_cache = None
