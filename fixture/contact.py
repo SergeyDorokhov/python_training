@@ -44,6 +44,15 @@ class ContactHelper:
         self.app.navigation.open_home_page()
         self.contact_cache = None
 
+    def delete_contact_from_group(self, id, group):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        select = Select(wd.find_element_by_name('group'))
+        select.select_by_visible_text(group.name)
+        wd.find_element_by_css_selector("input[value = '%s']" % id).click()
+        wd.find_element_by_name("remove").click()
+        self.contact_cache = None
+
     def edit_first_contact(self, contact):
         self.edit_contact_by_index(contact, 0)
 

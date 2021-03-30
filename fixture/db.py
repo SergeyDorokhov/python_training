@@ -16,7 +16,8 @@ class DbFixture:
         list_groups = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("select group_id, group_name, group_header, group_footer from group_list order by group_id asc")
+            cursor.execute(
+                "select group_id, group_name, group_header, group_footer from group_list order by group_id asc")
             for row in cursor:
                 (id, name, header, footer) = row
                 list_groups.append(Group(id=str(id), name=name, header=header, comment=footer))
@@ -91,10 +92,14 @@ class DbFixture:
         list_groups = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("select distinct group_id from address_in_groups group by group_id")
+            cursor.execute("""
+            select g.group_id, g.group_name from address_in_groups aig 
+            join group_list g
+            on aig .group_id  = g.group_id group by aig.group_id
+            """)
             rows = cursor.fetchall()
             for row in rows:
-                list_groups.append(Group(id=str(row[0])))
+                list_groups.append(Group(id=str(row[0]), name=row[1]))
         finally:
             cursor.close()
         return list(list_groups)
@@ -117,4 +122,3 @@ class DbFixture:
         finally:
             cursor.close()
         return list(list_groups)
-
